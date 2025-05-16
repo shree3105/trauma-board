@@ -1,3 +1,5 @@
+import { Patient } from "./types";
+
 export const initialPatients: Patient[] = [
   {
     id: 1,
@@ -18,7 +20,7 @@ export const initialPatients: Patient[] = [
     surgeryDate: null,
     notes: null,
   },
-  // Add more here
+  // Add more patients as needed
 ];
 
 export function getTheatreDays() {
