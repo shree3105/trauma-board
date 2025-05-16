@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-import { initialPatients, getTheatreDays } from "@/lib/data";
+import { supabase } from "@/lib/supabase";
+import { getTheatreDays } from "@/lib/data";
 import { Patient } from "@/lib/types";
 import SectionTable from "./SectionTable";
 
@@ -22,18 +22,87 @@ const completedCaseSections = ["Metalwork Review"];
 const archiveSection = ["Archive"];
 
 export default function TabsWrapper() {
-  const [patients, setPatients] = useState<Patient[]>(initialPatients);
+  const [patients, setPatients] = useState<Patient[]>([]);
+   // ✅ Fetch patients on mount
+  useEffect(() => {
+    const fetchPatients = async () => {
+  const { data, error } = await supabase.from("patients").select("*");
+
+  if (error) {
+    console.error("Error fetching patients:", error.message);
+  } else {
+    console.log("Fetched patients:", data);
+    setPatients(data || []);
+  }
+};
+    fetchPatients();
+  }, []);
+
+  // ✅ Realtime updates
+  useEffect(() => {
+  const channel = supabase
+    .channel("realtime:patients")
+    .on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "patients",
+      },
+      (payload) => {
+        if (payload.eventType === "DELETE") {
+          const deletedId = (payload.old as Patient).id;
+          setPatients((prev) => prev.filter((p) => p.id !== deletedId));
+        } else if (payload.eventType === "INSERT" || payload.eventType === "UPDATE") {
+          const updated = payload.new as Patient;
+          setPatients((prev) => {
+            const exists = prev.find((p) => p.id === updated.id);
+            if (exists) {
+              return prev.map((p) => (p.id === updated.id ? updated : p));
+            } else {
+              return [...prev, updated]; // new insert
+            }
+          });
+        }
+      }
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}, []);
+
+
+
+
+
+
+
+
+
   const theatreDays = getTheatreDays();
 
-  const updatePatient = (
-    id: number,
-    field: keyof Patient,
-    value: Patient[keyof Patient]
-  ) => {
+  const updatePatient = async <K extends keyof Patient>(
+  id: number,
+  field: K,
+  value: Patient[K]
+) => {
+  const { error } = await supabase
+    .from("patients")
+    .update({ [field]: value })
+    .eq("id", id);
+
+  if (error) {
+    console.error("Update failed:", error);
+  } else {
+    // Optimistically update local state
     setPatients((prev) =>
       prev.map((p) => (p.id === id ? { ...p, [field]: value } : p))
     );
-  };
+  }
+};
+
 
   return (
     <div className="p-6 space-y-6">

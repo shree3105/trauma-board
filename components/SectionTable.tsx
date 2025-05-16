@@ -9,6 +9,7 @@ import {
   SelectContent,
   SelectItem,
 } from "./ui/select";
+import { supabase } from "@/lib/supabase";
 
 type SectionTableProps = {
   title: string;
@@ -39,11 +40,16 @@ export default function SectionTable({
     return "";
   };
 
-  const filteredPatients = patients.filter((p) => {
-    if (section === "theatre") return p.theatreSlot === theatreKey;
-    if (section === "board") return p.section === title && p.theatreSlot === null;
-    return p.section === title;
-  });
+ const filteredPatients = patients.filter((p) => {
+  if (section === "theatre") return p.theatreSlot === theatreKey;
+  if (section === "board")
+    return (
+      p.section?.toLowerCase() === title.toLowerCase() &&
+      p.theatreSlot === null
+    );
+  return p.section?.toLowerCase() === title.toLowerCase();
+});
+
 
   const isEditable = (field: keyof Patient): boolean => {
     if (section === "archive") return field === "notes";
@@ -69,31 +75,36 @@ export default function SectionTable({
         {section === "board" && title === "New Cases" && setPatients && (
           <Button
             className="ml-2 mb-2 text-xs"
-            onClick={() => {
-              const newId = Math.max(0, ...patients.map((p) => p.id)) + 1;
-              setPatients([
-                ...patients,
-                {
-                  id: newId,
-                  referralDate: "",
-                  hospitalNumber: "",
-                  name: "",
-                  gender: "",
-                  dob: "",
-                  age: "",
-                  ward: "",
-                  consultant: "",
-                  doi: "",
-                  diagnosis: "",
-                  history: "",
-                  outcome: "",
-                  section: "New Cases",
-                  theatreSlot: null,
-                  surgeryDate: null,
-                  notes: null,
-                },
-              ]);
-            }}
+            onClick={async () => {
+  const { data, error } = await supabase
+    .from("patients")
+    .insert({
+      referralDate: "",  // all fields as blank or default
+      hospitalNumber: "",
+      name: "",
+      gender: "",
+      dob: "",
+      age: "",
+      ward: "",
+      consultant: "",
+      doi: "",
+      diagnosis: "",
+      history: "",
+      outcome: "",
+      section: "New Cases",
+      theatreSlot: null,
+      surgeryDate: null,
+      notes: null,
+    })
+    .select();
+
+  if (error) {
+    console.error("Failed to add new patient:", error);
+  } else {
+    console.log("New patient created:", data);
+    // Let realtime update take care of adding it to local state
+  }
+}}
           >
             + Add New
           </Button>
@@ -108,7 +119,7 @@ export default function SectionTable({
                     <th className="px-2 py-1 border min-w-[140px] max-w-[140px] ">Name</th>
                     <th className="px-2 py-1 border min-w-[80px] max-w-[80px] ">Gender</th>
                     <th className="px-2 py-1 border min-w-[110px] max-w-[110px]">DOB</th>
-                    <th className="px-2 py-1 border min-w-[40px] max-w-[40px] ">Age</th>
+                    <th className="px-2 py-1 border min-w-[50px] max-w-[50px] ">Age</th>
                     <th className="px-2 py-1 border min-w-[110px] max-w-[110px] ">Ward</th>
                     <th className="px-2 py-1 border min-w-[140px] max-w-[140px] ">Consultant</th>
                     <th className="px-2 py-1 border min-w-[110px] max-w-[110px] ">DOI</th>
@@ -283,13 +294,22 @@ export default function SectionTable({
                     )}
                     {setPatients && (
                       <Button
-                        className="w-22 text-xs bg-red-600 text-white hover:bg-red-700"
-                        onClick={() =>
-                          setPatients((prev) => prev.filter((x) => x.id !== p.id))
-                        }
-                      >
-                        Delete
-                      </Button>
+  className="w-22 text-xs bg-red-600 text-white hover:bg-red-700"
+  onClick={async () => {
+    const { error } = await supabase
+      .from("patients")
+      .delete()
+      .eq("id", p.id);
+
+    if (error) {
+      console.error("Failed to delete:", error.message);
+    }
+    // No need to manually update state — realtime handles it!
+  }}
+>
+  Delete
+</Button>
+
                     )}
                   </div>
                 </td>
