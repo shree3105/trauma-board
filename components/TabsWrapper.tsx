@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabase";
 import { getTheatreDays } from "@/lib/data";
 import { Patient } from "@/lib/types";
 import SectionTable from "./SectionTable";
+import LogoutButton from "@/components/LogoutButton";
 
 const sectionTitles = [
   "New Cases",
@@ -107,7 +108,11 @@ export default function TabsWrapper() {
 
   return (
     <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-bold">Orthopaedic Trauma Board</h1>
+      
+      <div className="flex justify-between items-center">
+  <h1 className="text-2xl font-bold">Orthopaedic Trauma Board</h1>
+  <LogoutButton />
+</div>
       <Tabs defaultValue="board" className="space-y-4">
         <TabsList>
           <TabsTrigger value="theatre">Theatre List</TabsTrigger>
