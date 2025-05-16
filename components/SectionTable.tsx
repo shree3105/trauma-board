@@ -118,7 +118,7 @@ export default function SectionTable({
             <th className="px-2 py-1 border min-w-[100px] max-w-[100px] ">Referral Date</th>
                     <th className="px-2 py-1 border min-w-[100px] max-w-[100px] ">Hospital #</th>
                     <th className="px-2 py-1 border min-w-[120px] max-w-[120px] ">Name</th>
-                    <th className="px-2 py-1 border min-w-[60px] max-w-[60px] ">Gender</th>
+                    <th className="px-2 py-1 border min-w-[70px] max-w-[70px] ">Gender</th>
                     <th className="px-2 py-1 border min-w-[100px] max-w-[100px]">DOB</th>
                     <th className="px-2 py-1 border min-w-[50px] max-w-[50px] ">Age</th>
                     <th className="px-2 py-1 border min-w-[90px] max-w-[90px] ">Ward</th>
