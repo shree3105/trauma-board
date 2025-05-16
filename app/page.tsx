@@ -11,6 +11,25 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
+type Patient = {
+  id: number;
+  referralDate: string;
+  hospitalNumber: string;
+  name: string;
+  gender: string;
+  dob: string;
+  age: number | string;
+  ward: string;
+  consultant: string;
+  doi: string;
+  diagnosis: string;
+  history: string;
+  outcome: string;
+  section: string;
+  theatreSlot: string | null;
+  surgeryDate: string | null;
+  notes: string | null;
+};
 
 
 const initialPatients = [
@@ -54,6 +73,8 @@ const initialPatients = [
   },
 ];
 
+
+
 function getTheatreDays() {
   const today = new Date();
   const days = [];
@@ -68,7 +89,17 @@ function getTheatreDays() {
   return days;
 }
 
-function AutoResizingTextarea({ value, onChange, readOnly = false }) {
+type AutoResizingTextareaProps = {
+  value: string | number;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  readOnly?: boolean;
+};
+
+function AutoResizingTextarea({
+  value,
+  onChange,
+  readOnly = false,
+}: AutoResizingTextareaProps) {
   const textareaRef = useRef(null);
 
   useEffect(() => {
@@ -114,16 +145,16 @@ const sectionTitles = [
   "Onward Referrals",
 ];
 
-const getRowColor = (referralDate) => {
-  const parseUKDate = (str) => {
+const getRowColor = (referralDate: string): string => {
+  const parseUKDate = (str: string): Date => {
     const [day, month, year] = str.split("/").map(Number);
     return new Date(year, month - 1, day);
   };
 
-  const daysAgo = (dateString) => {
+  const daysAgo = (dateString: string): number => {
     const refDate = parseUKDate(dateString);
     const now = new Date();
-    const diffTime = now - refDate;
+    const diffTime = now.getTime() - refDate.getTime();
     return Math.floor(diffTime / (1000 * 60 * 60 * 24));
   };
 
@@ -139,13 +170,18 @@ const getRowColor = (referralDate) => {
 const completedCaseSections = ["Metalwork Review"];
 
 export default function TraumaBoard() {
-  const [patients, setPatients] = useState(initialPatients);
+  const [patients, setPatients] = useState<Patient[]>(initialPatients);
 
-  const updatePatient = (id, field, value) => {
-    setPatients((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, [field]: value } : p))
-    );
-  };
+  const updatePatient = (
+  id: number,
+  field: keyof Patient,
+  value: Patient[keyof Patient]
+) => {
+  setPatients((prev) =>
+    prev.map((p) => (p.id === id ? { ...p, [field]: value } : p))
+  );
+};
+
 
   const theatreDays = getTheatreDays();
 
