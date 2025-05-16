@@ -193,7 +193,7 @@ export default function SectionTable({
                 )}
               </td>
               <td className="px-2 py-1 border">{renderTextarea("diagnosis", p.diagnosis, p.id)}</td>
-              <td className="px-2 py-1 border">{p.history}</td>
+              <td className="px-2 py-1 border">{renderTextarea("history", p.history, p.id)}</td>
               <td className="px-2 py-1 border">{renderTextarea("outcome", p.outcome, p.id)}</td>
               {section === "completed" || section === "archive" ? (
                 <td className="px-2 py-1 border">{p.surgeryDate ?? "-"}</td>
