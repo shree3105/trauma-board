@@ -6,7 +6,7 @@ import type { Session } from '@supabase/supabase-js';
 
 export default function AuthWrapper({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
-  const [session, setSession] = useState<Session | null>(null); 
+  const [, setSession] = useState<Session | null>(null); 
   const router = useRouter();
 
   useEffect(() => {
