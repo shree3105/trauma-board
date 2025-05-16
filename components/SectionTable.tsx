@@ -103,25 +103,25 @@ export default function SectionTable({
       <table className="min-w-full border text-sm text-left">
         <thead className="bg-gray-200">
           <tr>
-            <th className="px-2 py-1 border">Referral Date</th>
-            <th className="px-2 py-1 border">Hospital #</th>
-            <th className="px-2 py-1 border">Name</th>
-            <th className="px-2 py-1 border">Gender</th>
-            <th className="px-2 py-1 border">DOB</th>
-            <th className="px-2 py-1 border">Age</th>
-            <th className="px-2 py-1 border">Ward</th>
-            <th className="px-2 py-1 border">Consultant</th>
-            <th className="px-2 py-1 border">DOI</th>
-            <th className="px-2 py-1 border">Diagnosis</th>
-            <th className="px-2 py-1 border">History</th>
-            <th className="px-2 py-1 border">Outcome</th>
+            <th className="px-2 py-1 border min-w-[110px] max-w-[110px] ">Referral Date</th>
+                    <th className="px-2 py-1 border min-w-[110px] max-w-[110px] ">Hospital #</th>
+                    <th className="px-2 py-1 border min-w-[140px] max-w-[140px] ">Name</th>
+                    <th className="px-2 py-1 border min-w-[80px] max-w-[80px] ">Gender</th>
+                    <th className="px-2 py-1 border min-w-[110px] max-w-[110px]">DOB</th>
+                    <th className="px-2 py-1 border min-w-[40px] max-w-[40px] ">Age</th>
+                    <th className="px-2 py-1 border min-w-[110px] max-w-[110px] ">Ward</th>
+                    <th className="px-2 py-1 border min-w-[140px] max-w-[140px] ">Consultant</th>
+                    <th className="px-2 py-1 border min-w-[110px] max-w-[110px] ">DOI</th>
+                    <th className="px-2 py-1 border min-w-[180px] w-[10%]">Diagnosis</th>
+                    <th className="px-2 py-1 border min-w-[220px] w-[20%]">History</th>
+                    <th className="px-2 py-1 border min-w-[260px] w-[25%]">Outcome</th>
             {(section === "completed" || section === "archive") && (
-              <th className="px-2 py-1 border">Surgery Date</th>
+              <th className="px-2 py-1 border min-w-[110px] max-w-[110px]">Surgery Date</th>
             )}
             {section === "archive" ? (
-              <th className="px-2 py-1 border">Notes</th>
+              <th className="px-2 py-1 border min-w-[180px] w-[10%]">Notes</th>
             ) : (
-              <th className="px-2 py-1 border">Actions</th>
+              <th className="px-2 py-1 border min-w-[400px] max-w-[400px]">Actions</th>
             )}
           </tr>
         </thead>
@@ -235,6 +235,20 @@ export default function SectionTable({
                     )}
                     {section === "theatre" && (
                       <>
+                        <Select
+                          onValueChange={(val) => updatePatient(p.id, "theatreSlot", val)}
+                        >
+                          <SelectTrigger className="w-24 text-xs">
+                            <SelectValue placeholder="Theatre" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {theatreDays.map((d) => (
+                              <SelectItem key={d.key} value={d.key}>
+                                {d.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                         <Button
                           className="w-22 text-xs"
                           onClick={() => {
