@@ -2,6 +2,7 @@ import React from "react";
 import { Patient } from "@/lib/types";
 import AutoResizingTextarea from "./AutoResizingTextarea";
 import { Button } from "./ui/button";
+import { formatDateUK } from "@/lib/formatDate";
 import {
   Select,
   SelectTrigger,
@@ -111,18 +112,18 @@ export default function SectionTable({
         )}
       </h2>
 
-      <table className="min-w-full border text-sm text-left">
+      <table className="min-w-full border text-xs text-left">
         <thead className="bg-gray-200">
           <tr>
-            <th className="px-2 py-1 border min-w-[110px] max-w-[110px] ">Referral Date</th>
-                    <th className="px-2 py-1 border min-w-[110px] max-w-[110px] ">Hospital #</th>
-                    <th className="px-2 py-1 border min-w-[140px] max-w-[140px] ">Name</th>
-                    <th className="px-2 py-1 border min-w-[80px] max-w-[80px] ">Gender</th>
-                    <th className="px-2 py-1 border min-w-[110px] max-w-[110px]">DOB</th>
+            <th className="px-2 py-1 border min-w-[100px] max-w-[100px] ">Referral Date</th>
+                    <th className="px-2 py-1 border min-w-[100px] max-w-[100px] ">Hospital #</th>
+                    <th className="px-2 py-1 border min-w-[120px] max-w-[120px] ">Name</th>
+                    <th className="px-2 py-1 border min-w-[60px] max-w-[60px] ">Gender</th>
+                    <th className="px-2 py-1 border min-w-[100px] max-w-[100px]">DOB</th>
                     <th className="px-2 py-1 border min-w-[50px] max-w-[50px] ">Age</th>
-                    <th className="px-2 py-1 border min-w-[110px] max-w-[110px] ">Ward</th>
+                    <th className="px-2 py-1 border min-w-[90px] max-w-[90px] ">Ward</th>
                     <th className="px-2 py-1 border min-w-[140px] max-w-[140px] ">Consultant</th>
-                    <th className="px-2 py-1 border min-w-[110px] max-w-[110px] ">DOI</th>
+                    <th className="px-2 py-1 border min-w-[100px] max-w-[100px] ">DOI</th>
                     <th className="px-2 py-1 border min-w-[180px] w-[10%]">Diagnosis</th>
                     <th className="px-2 py-1 border min-w-[220px] w-[20%]">History</th>
                     <th className="px-2 py-1 border min-w-[260px] w-[25%]">Outcome</th>
@@ -152,10 +153,10 @@ export default function SectionTable({
                         new Date(e.target.value).toLocaleDateString("en-GB")
                       )
                     }
-                    className="w-full text-sm px-2 py-1 border rounded"
+                    className="w-full text-xs px-2 py-1 border rounded"
                   />
                 ) : (
-                  p.referralDate
+                  formatDateUK(p.referralDate)
                 )}
               </td>
               <td className="px-2 py-1 border">{renderTextarea("hospitalNumber", p.hospitalNumber, p.id)}</td>
@@ -169,10 +170,10 @@ export default function SectionTable({
                     onChange={(e) =>
                       updatePatient(p.id, "dob", new Date(e.target.value).toLocaleDateString("en-GB"))
                     }
-                    className="w-full text-sm px-2 py-1 border rounded"
+                    className="w-full text-xs px-2 py-1 border rounded"
                   />
                 ) : (
-                  p.dob
+                  formatDateUK(p.dob)
                 )}
               </td>
               <td className="px-2 py-1 border">{renderTextarea("age", p.age, p.id)}</td>
@@ -186,10 +187,10 @@ export default function SectionTable({
                     onChange={(e) =>
                       updatePatient(p.id, "doi", new Date(e.target.value).toLocaleDateString("en-GB"))
                     }
-                    className="w-full text-sm px-2 py-1 border rounded"
+                    className="w-full text-xs px-2 py-1 border rounded"
                   />
                 ) : (
-                  p.doi
+                  formatDateUK(p.doi)
                 )}
               </td>
               <td className="px-2 py-1 border">{renderTextarea("diagnosis", p.diagnosis, p.id)}</td>
