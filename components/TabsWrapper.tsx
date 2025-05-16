@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
+
 import { initialPatients, getTheatreDays } from "@/lib/data";
 import { Patient } from "@/lib/types";
 import SectionTable from "./SectionTable";
