@@ -89,18 +89,22 @@ function getTheatreDays() {
   return days;
 }
 
+
+
+
+
 type AutoResizingTextareaProps = {
-  value: string | number;
+  value: string | number | null;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   readOnly?: boolean;
 };
 
-function AutoResizingTextarea({
+export function AutoResizingTextarea({
   value,
   onChange,
   readOnly = false,
 }: AutoResizingTextareaProps) {
-  const textareaRef = useRef(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     const ta = textareaRef.current;
@@ -113,7 +117,7 @@ function AutoResizingTextarea({
   return (
     <textarea
       ref={textareaRef}
-      value={value}
+      value={value ?? ""} // safely handles nulls
       onChange={onChange}
       readOnly={readOnly}
       style={{
@@ -133,6 +137,7 @@ function AutoResizingTextarea({
     />
   );
 }
+
 
 const sectionTitles = [
   "New Cases",
