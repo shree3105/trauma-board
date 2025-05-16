@@ -73,7 +73,7 @@ export default function TabsWrapper() {
               section="board"
               theatreDays={theatreDays}
               setPatients={setPatients}
-              isBoard={true}
+              
             />
           ))}
         </TabsContent>
