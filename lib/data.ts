@@ -8,10 +8,10 @@ export const initialPatients: Patient[] = [
     name: "John Doe",
     gender: "Male",
     dob: "15/04/1980",
-    age: 45,
+    
     ward: "Trauma A",
     consultant: "Dr. Smith",
-    doi: "09/05/2025",
+    
     diagnosis: "Femur fracture",
     history: "Fall from height",
     outcome: "Pending Surgery",
