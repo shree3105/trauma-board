@@ -5,10 +5,10 @@ export type Patient = {
   name: string;
   gender: string;
   dob: string;
-  age: string | number;
+  
   ward: string;
   consultant: string;
-  doi: string;
+  
   diagnosis: string;
   history: string;
   outcome: string;

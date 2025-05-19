@@ -85,10 +85,10 @@ export default function SectionTable({
       name: "",
       gender: "",
       dob: "",
-      age: "",
+      
       ward: "",
       consultant: "",
-      doi: "",
+      
       diagnosis: "",
       history: "",
       outcome: "",
@@ -120,10 +120,10 @@ export default function SectionTable({
                     <th className="px-2 py-1 border min-w-[120px] max-w-[120px] ">Name</th>
                     <th className="px-2 py-1 border min-w-[70px] max-w-[70px] ">Gender</th>
                     <th className="px-2 py-1 border min-w-[100px] max-w-[100px]">DOB</th>
-                    <th className="px-2 py-1 border min-w-[50px] max-w-[50px] ">Age</th>
+                    
                     <th className="px-2 py-1 border min-w-[90px] max-w-[90px] ">Ward</th>
                     <th className="px-2 py-1 border min-w-[140px] max-w-[140px] ">Consultant</th>
-                    <th className="px-2 py-1 border min-w-[100px] max-w-[100px] ">DOI</th>
+                    
                     <th className="px-2 py-1 border min-w-[180px] w-[10%]">Diagnosis</th>
                     <th className="px-2 py-1 border min-w-[220px] w-[20%]">History</th>
                     <th className="px-2 py-1 border min-w-[260px] w-[25%]">Outcome</th>
@@ -176,23 +176,10 @@ export default function SectionTable({
                   formatDateUK(p.dob)
                 )}
               </td>
-              <td className="px-2 py-1 border">{renderTextarea("age", p.age, p.id)}</td>
+              
               <td className="px-2 py-1 border">{renderTextarea("ward", p.ward, p.id)}</td>
               <td className="px-2 py-1 border">{renderTextarea("consultant", p.consultant, p.id)}</td>
-              <td className="px-2 py-1 border">
-                {isEditable("doi") ? (
-                  <input
-                    type="date"
-                    value={p.doi.split("/").reverse().join("-")}
-                    onChange={(e) =>
-                      updatePatient(p.id, "doi", new Date(e.target.value).toLocaleDateString("en-GB"))
-                    }
-                    className="w-full text-xs px-2 py-1 border rounded"
-                  />
-                ) : (
-                  formatDateUK(p.doi)
-                )}
-              </td>
+              
               <td className="px-2 py-1 border">{renderTextarea("diagnosis", p.diagnosis, p.id)}</td>
               <td className="px-2 py-1 border">{renderTextarea("history", p.history, p.id)}</td>
               <td className="px-2 py-1 border">{renderTextarea("outcome", p.outcome, p.id)}</td>
